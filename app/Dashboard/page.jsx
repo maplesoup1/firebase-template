@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   LogoutLink,
   useKindeBrowserClient,
@@ -39,10 +38,7 @@ const Dashboard = () => {
   }
   return (
     <div>
-      Dashboard
-      <LogoutLink>
-        <Button>Logout</Button>
-      </LogoutLink>
+      dashboard
     </div>
   );
 };
