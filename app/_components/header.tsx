@@ -7,6 +7,7 @@ import { LoginLink, RegisterLink } from '@kinde-oss/kinde-auth-nextjs';
 const navItems = ['Product', 'Pricing', 'Contact us', 'About us'];
 
 const header = () => {
+  
   return (
     <div>
       <div className='flex items-center justify-between p-5 shadow-sm'>

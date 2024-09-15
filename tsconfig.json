@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/dashboard/page.jsx", "app/dashboard/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/dashboard/page.jsx", "app/dashboard/page.jsx", "app/dashboard/_components/DashBoardHeader.jsx"],
   "exclude": ["node_modules"]
 }
