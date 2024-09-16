@@ -42,10 +42,12 @@ export const SideNavBar = () => {
         <Image src="/logo.png" width={100} height={100} alt="logo" />
       </div>
       <div>
+        <Link href={'/Create-meeting'}>
         <Button className="flex gap-2 w-full rounded-full mt-7">
           <Plus />
           Create
         </Button>
+        </Link>
       </div>
 
       <div className="mt-5 flex flex-col gap-5">
