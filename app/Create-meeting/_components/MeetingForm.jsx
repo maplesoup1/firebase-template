@@ -1,7 +1,7 @@
 "use client";
 import { ChevronLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import LocationOption from "@/app/_utils/LocationOption";
@@ -16,6 +16,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { toast } from "sonner";
+import { app } from "@/config/firebase";
+import { useRouter } from 'next/navigation';
+
 
 const MeetingForm = ({setFormValue}) => {
   const [location, setLocation] = useState();
@@ -23,16 +29,35 @@ const MeetingForm = ({setFormValue}) => {
   const [eventName, setEventName] = useState();
   const [duration, setDuration] = useState(30);
   const [locationUrl, setLocationUrl] = useState();
+  const db = getFirestore(app);
+  const {user} = useKindeBrowserClient();
+  const router = useRouter();
 
-  useEffect(()=>{
-    setFormValue({
-      eventName:eventName,
-      duration:duration,
-      locationUrl:locationUrl,
-      location:location,
-      themeColor:themeColor
+  const formData = useMemo(() => ({
+    eventName,
+    duration,
+    locationUrl,
+    location,
+    themeColor
+  }), [eventName, duration, locationUrl, location, themeColor]);
+
+
+  useEffect(() => {
+    setFormValue(formData);
+  }, [formData, setFormValue]);
+
+  const onCreateClick = async() => {
+    const id = Date.now().toString();
+    await setDoc(doc(db,'MeetingEvent',id), {
+      id:id,
+      ...formData,
+      businessId: doc(db, 'Business',user?.email),
+      createBy: user?.email
+    }).then(resp=>{
+      toast('New Meeting Event Created!')
+      router.replace('/dashboard/meeting-type');
     })
-  }),[eventName,duration,location,locationUrl]
+  }
 
   return (
     <div className="p-6">
@@ -98,7 +123,7 @@ const MeetingForm = ({setFormValue}) => {
       <h2 className="font-bold">Select Theme color</h2>
       <div className="flex justify-evenly mt-4">
         {ThemeOptions.map((items, index) => (
-          <div
+          <div key={index}
             className={`h-7 w-7 rounded-full cursor-pointer hover:bg-opacity-30
         ${themeColor === items && "border-balck border-4 scale-125"}
         `}
@@ -110,7 +135,8 @@ const MeetingForm = ({setFormValue}) => {
 
       <Button
         className="w-full mt-9"
-        disabled={(!eventName || !duration || !location || !locationUrl)}
+        disabled={(!eventName || !duration || !location || !locationUrl || !themeColor)}
+        onClick={(e)=>onCreateClick()}
       >
         Create
       </Button>
