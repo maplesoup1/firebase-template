@@ -37,8 +37,9 @@ const Dashboard = () => {
     return <h2>Loading...</h2>
   }
   return (
-    <div>
-      dashboard
+    <div className="flex flex-col justify-center items-center h-screen">
+        <h1 className="text-8xl text-center leading-[150px]">Coming soon!</h1>
+        <h2>But other activity like create event is available</h2>
     </div>
   );
 };
